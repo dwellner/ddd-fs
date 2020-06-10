@@ -1,15 +1,79 @@
-﻿module Domain
-open Microsoft.FSharp.Data.UnitSystems.SI.UnitSymbols
+﻿(* 
 
 
+## brief intro to F#
+
+## overview of key language features (with a DDD twist)
+
+## quick glance at a F# ASP.NET Core example app (with a DDD twist)
+
+
+F# is *NOT* better than C#. Nor worse. Nor equal.
+
+A programming language is just a tool. None of them are good, really :)
+Languages is about people more than about technology.
+
+Functional programming is a superpower. Learing to to it better will 
+help you in any language, whether that be F#, C# or even Python.
+
+
+OOP
+ - Biassed towards coupling between data and functionality (classes)
+ - well suited for stateful operations (classes)
+ - Traditionally Stateful operations are all around. 
+   (A CRUD database is a huge shared mutable state container)
+
+FP 
+ - Biassed towards decoupling of data and functionality (functions and data)   
+ - well suited for data heavy processing (e.g.: machine learning)
+ - stateless computing (eg. serverless)
+
+ - Domain driven design 
+
+     "the state of a system is a left-fold of previous behaviours"
+ 
+
+Advantages of F#
+================
+- functional first yet hybrid language. 
+
+- Relatively easy, reader friendly syntax
+     - very low on ceremony and boilerplate
+     - Arguably, if a PO or BA can read a Yaml file, they can read an F# type file.
+     - heaven compared to Clojure :)
+
+- More strongly typed than C#, yet types are still easier to express and use 
+
+- Type system and immutability greatly reduce runtime variances
+    - less need for low-value-add unit testing
+
+- Build on top of the .NET and .NET Core platform
+    - Can seamlessly integrate with existing massive C# ecosystem. (e.g. Asp.NET Core)
+    - No need to learn the platform, "just" need to learn the language
+
+
+Considerations
+==============
+
+- F# is a lot less mainstream than it's OO causin C#. 
+  Therefore the tooling around the language is currently less rich and advanced as for C#
+
+
+- Depending on the team background and experience level, the functional programming 
+  learning curve can prove too big of an investment for quite some teams
+
+
+*)
 
 
 // Hello world - obviously :) 
 
-let hello name = printfn "Hello %s" name
+// No classes, namespaces or other clutter here when we don't need them.
+
+let hello name = 
+    printfn "Hello %s" name
 
 hello "world!"
-
 
 
 
@@ -76,7 +140,6 @@ type CardType =  Visa | Mastercard
 // Union types help make the domain explicit
 type CardNumber = CardNumber of string
 
-// let myCardnr: CardNumber = "123" wont compile. Explicit type is needed
 let myCardnr: CardNumber = CardNumber "123"
 
 
@@ -154,6 +217,24 @@ let bookOrder:BookOrder = fun command ->
     | _ -> Ok event 
 
 
+
+(* Some links if interested: 
+
+    This materials:       github.com/dwellner/ddd-fs
+    Learning F#:          fsharpforfunandprofit.com
+    Domain Driven Design  Hands-On Domain-Driven Design with .NET Core: 
+                          Alexey Zimarev
+
+    Event sourcing        https://www.youtube.com/watch?v=JHGkaShoyNs
+                          Greg Young
+
+*)
+
+
+
+
+
+
    
 // async
 let getCustomerSaldo customerId = async { return 0 } //fake API call
@@ -166,6 +247,8 @@ let getCustomerCredit customerId limit =
         return if saldo < limit then Good else Bad
     }
 
+
+open Microsoft.FSharp.Data.UnitSystems.SI.UnitSymbols
 
 // units of measure
 let oneHour = 3600<s>
