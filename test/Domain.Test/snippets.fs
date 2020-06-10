@@ -1,4 +1,5 @@
-﻿(* 
+﻿module TechTalk
+(* 
 
 
 ## brief intro to F#
