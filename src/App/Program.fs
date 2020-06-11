@@ -9,35 +9,25 @@ open Giraffe
 open App.HttpHandlers
 open Giraffe.SerilogExtensions
 open Serilog
-open App.Common.Aggregate
 
+
+let createClassifiedAdCommandController () = 
+    let execute=App.ClassifiedAds.Service.execute
+    let repository=
+        App.EventRepository.createRepository<ClassifiedAd.ClassifiedAdEvent>()
+    App.ClassifiedAds.Controller.createController (execute repository)
 
 // ---------------------------------
 // Web app
 // ---------------------------------
 
-let mutable ads: ClassifiedAd.ClassifiedAdEvent list = []
-
-
-let repository: EventRepository<ClassifiedAd.ClassifiedAdEvent> = {
-    loadAllEvents= fun id-> async { return ads }
-    save=fun id event-> async { 
-        ads <- (event :: ads |> Seq.rev |> Seq.toList) ; 
-        return Ok () 
-    }
-}
-
 let webApp =
-
-    let classifiedAdController = App.ClassifiedAds.Controller.createController (App.ClassifiedAds.Service.execute repository)
-
-
     choose [
         subRoute "/api/hello2"
             (choose [
                 GET >=> handleGetHello
             ])
-        classifiedAdController
+        createClassifiedAdCommandController ()
         setStatusCode 404 >=> text "Not Found" ]
         
 // ---------------------------------
@@ -51,10 +41,6 @@ let configureCors (builder : CorsPolicyBuilder) =
            |> ignore
 
 let configureApp (app : IApplicationBuilder) =
-    let env = app.ApplicationServices.GetService<IWebHostEnvironment>()
-    (*(match env.IsDevelopment() with
-    | true  -> app.UseDeveloperExceptionPage()
-    | false -> app.UseGiraffeErrorHandler errorHandler)*)
     app
         .UseHttpsRedirection()
         .UseCors(configureCors)

@@ -19,18 +19,16 @@ help you in any language, whether that be F#, C# or even Python.
 
 
 OOP
- - Biassed towards coupling between data and functionality (classes)
+ - coupling of data and functionality (classes and objects)
  - well suited for stateful operations (classes)
  - Traditionally Stateful operations are all around. 
    (A CRUD database is a huge shared mutable state container)
 
 FP 
- - Biassed towards decoupling of data and functionality (functions and data)   
+ - decoupling of data and functionality (functions and data)   
  - well suited for data heavy processing (e.g.: machine learning)
- - stateless computing (eg. serverless)
-
+ - trends is towards stateless computing (eg. serverless)
  - Domain driven design 
-
      "the state of a system is a left-fold of previous behaviours"
  
 
